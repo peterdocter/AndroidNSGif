@@ -33,7 +33,7 @@ public class NSGifView extends ImageView implements Runnable {
 			@Override
 			public void run() {
 				curFrame = gifDecoder.getNextFrame();
-				setImageBitmap(curFrame.bitmap);
+				invalidate();
 			}
 		};
 	}
