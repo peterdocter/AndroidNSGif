@@ -46,7 +46,7 @@ public class NSGifView extends ImageView implements Runnable {
 			gifDecoder.recycle();
 		}
 		gifDecoder = new GifDecoder(filePath);
-		curFrame = gifDecoder.getCurrentFrame();
+		curFrame = gifDecoder.getFirstFrame();
 		setImageBitmap(curFrame.bitmap);
 	}
 

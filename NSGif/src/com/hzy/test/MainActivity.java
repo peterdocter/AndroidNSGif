@@ -39,7 +39,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		v1.setImagePath(dataDir + "001.gif");
+		v1.setImagePath(dataDir + "nointerval.gif");
 		v2.setImagePath(dataDir + "002.gif");
 		v3.setImagePath(dataDir + "003.gif");
 		v4 = new NSGifView(this, dataDir + "004.gif");

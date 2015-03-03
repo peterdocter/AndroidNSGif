@@ -198,9 +198,9 @@ unsigned char* load_file(const char *path, size_t* file_size) {
 	}
 	buf_size = gif->width * gif->height * 4;
 	delay = get_frame(gif, index);
-	if (delay <= 0) {
-		return -1;
-	}
+//	if (delay <= 0) {
+//		return -1;
+//	}
 	if ((ret = AndroidBitmap_lockPixels(env, jbitmap, &bmpAddr)) < 0) {
 		LOGE("AndroidBitmap_lockPixels() failed ! error=%d", ret);
 		return ret;

@@ -94,13 +94,14 @@ public class GifDecoder {
 			int delay = nGetFrameBitmap(index, curFrame.bitmap, this.decoderHandler);
 			if (delay > 0) {
 				curFrame.delay = delay;
-				curFrame.index = index;
-				return curFrame;
 			} else {
-				throw new RuntimeException("Gif file decode error");
+				curFrame.delay = 100;
 			}
+			curFrame.index = index;
+			return curFrame;
+		} else {
+			throw new NullPointerException("Bitmap is null");
 		}
-		return null;
 	}
 
 	/**
