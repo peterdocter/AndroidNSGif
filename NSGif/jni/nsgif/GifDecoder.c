@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 #include <android/bitmap.h>
 #include "JniWrapper.h"
-#include "nsgif/libnsgif.h"
+#include "libnsgif.h"
 
 #ifndef _Included_com_hzy_nsgif_GifDecoder
 #define _Included_com_hzy_nsgif_GifDecoder
@@ -193,8 +193,8 @@ unsigned char* load_file(const char *path, size_t* file_size) {
 
 	gif = (gif_animation*) handler;
 	if(gif == NULL){
-		return -1;
 		LOGE("gif is null");
+		return -1;
 	}
 	buf_size = gif->width * gif->height * 4;
 	delay = get_frame(gif, index);
@@ -217,8 +217,8 @@ unsigned char* load_file(const char *path, size_t* file_size) {
  */JNIEXPORT jint JNICALL FUNC(nDestory)(JNIEnv *env, jobject thiz, jint handler) {
 	gif_animation* gif = (gif_animation*) handler;
 	if (gif == NULL) {
-		return -1;
 		LOGE("gif is null");
+		return -1;
 	} else {
 		free(gif->gif_data);
 		gif_finalise(gif);
