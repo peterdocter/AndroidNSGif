@@ -4,11 +4,14 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
 public class GifDecoder {
-	int frameCount;
-	int imageWidth;
-	int imageHeight;
-	Frame curFrame = null;
-	int decoderHandler = 0;
+
+	private int frameCount;
+	private int imageWidth;
+	private int imageHeight;
+	private Frame curFrame = null;
+	private int decoderHandler = 0;
+
+	public static final int DEFAULT_DELAY = 100;
 
 	/**
 	 * constructor
@@ -18,7 +21,28 @@ public class GifDecoder {
 	 */
 	public GifDecoder(String path) {
 		int[] params = new int[4];
-		if (nInitParams(path, params) == 0) {
+		if (nInitByPath(path, params) == 0) {
+			this.frameCount = params[0];
+			this.imageWidth = params[1];
+			this.imageHeight = params[2];
+			this.decoderHandler = params[3];
+			curFrame = new Frame();
+			curFrame.bitmap = Bitmap.createBitmap(imageWidth, imageHeight, Config.ARGB_8888);
+			curFrame.index = 0;
+		} else {
+			throw new RuntimeException("Gif file decode error");
+		}
+	}
+	
+	/**
+	 * constructor
+	 * 
+	 * @param path
+	 *            the gif file path
+	 */
+	public GifDecoder(byte[] buffer) {
+		int[] params = new int[4];
+		if (nInitByBytes(buffer, params) == 0) {
 			this.frameCount = params[0];
 			this.imageWidth = params[1];
 			this.imageHeight = params[2];
@@ -95,7 +119,7 @@ public class GifDecoder {
 			if (delay > 0) {
 				curFrame.delay = delay;
 			} else {
-				curFrame.delay = 100;
+				curFrame.delay = DEFAULT_DELAY;
 			}
 			curFrame.index = index;
 			return curFrame;
@@ -132,7 +156,16 @@ public class GifDecoder {
 	 *            returned gif parameters
 	 * @return error code ,0 if no error
 	 */
-	private native int nInitParams(String path, int[] params);
+	private native int nInitByPath(String path, int[] params);
+
+	/**
+	 * init the params, get the frame count, width,height
+	 * 
+	 * @param buffer
+	 * @param params
+	 * @return
+	 */
+	private native int nInitByBytes(byte[] buffer, int[] params);
 
 	/**
 	 * write image data to bitmap
@@ -143,7 +176,7 @@ public class GifDecoder {
 	 *            target bitmap
 	 * @return frame delay time(ms) if <= 0 means failed
 	 */
-	private native int nGetFrameBitmap(int index, Bitmap bmp, int handler);
+	private native int nGetFrameBitmap(int index, Object bmp, int handler);
 
 	/**
 	 * destory the native resources
